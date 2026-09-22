@@ -117,10 +117,16 @@ def analyze_logs(logs_data, rules, query):
 
     # 3-sigma + IQR anomaly detection
     counts = [w["count"] for w in windows]
-    mean = float(np.mean(counts))
-    std = float(np.std(counts)) if len(counts) > 1 else 1.0
-    q1 = float(np.percentile(counts, 25)) if len(counts) > 3 else mean - std
-    q3 = float(np.percentile(counts, 75)) if len(counts) > 3 else mean + std
+    if counts:
+        mean = float(np.mean(counts))
+        std = float(np.std(counts)) if len(counts) > 1 else 1.0
+        q1 = float(np.percentile(counts, 25)) if len(counts) > 3 else mean - std
+        q3 = float(np.percentile(counts, 75)) if len(counts) > 3 else mean + std
+    else:
+        mean = 0.0
+        std = 1.0
+        q1 = 0.0
+        q3 = 0.0
     iqr = q3 - q1 if q3 > q1 else 1.0
 
     anomalies = []
