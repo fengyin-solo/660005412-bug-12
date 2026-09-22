@@ -115,7 +115,18 @@ def analyze_logs(logs_data, rules, query):
             "sources": dict(sources)
         })
 
-    # 3-sigma + IQR anomaly detection
+    # Empty sample: statistics are undefined. Return an empty-but-valid result
+    # so the panel can show an explanatory empty state instead of a 500.
+    if not windows:
+        return {
+            "logs": [],
+            "windows": [],
+            "anomalies": [],
+            "alerts": [],
+            "totalLogs": 0
+        }
+
+    # 3-sigma + IQR anomaly detection (computed once from the same window list)
     counts = [w["count"] for w in windows]
     mean = float(np.mean(counts))
     std = float(np.std(counts)) if len(counts) > 1 else 1.0

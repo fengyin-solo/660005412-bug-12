@@ -11,6 +11,10 @@
         <el-button size="small" type="warning" @click="store.detect()" :disabled="!store.result">⚠ 检测异常</el-button>
       </div>
     </header>
+    <div v-if="store.error" class="error-bar">
+      <span>⚠️ {{ store.error }}</span>
+      <el-button size="small" type="primary" @click="store.generate()" :loading="store.loading">重试</el-button>
+    </div>
     <div class="main-grid">
       <div class="grid-col">
         <LogTable />
@@ -44,6 +48,7 @@ body{font-family:system-ui,monospace;background:#0f172a;color:#e2e8f0}
 .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:#1e293b;border-bottom:1px solid #334155}
 .top-bar h1{font-size:1.1rem;color:#38bdf8}
 .toolbar{display:flex;gap:8px;align-items:center}
+.error-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 20px;background:#7f1d1d;color:#fecaca;font-size:12px;border-bottom:1px solid #991b1b}
 .main-grid{display:grid;grid-template-columns:1fr 400px;gap:12px;padding:12px 20px;min-height:50vh}
 .grid-col{overflow:hidden}
 .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 16px}
